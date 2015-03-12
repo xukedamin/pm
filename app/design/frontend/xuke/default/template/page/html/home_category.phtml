@@ -1,0 +1,25 @@
+<div class="box-static container">
+    <div> <h4 class="homepage-title">Shop Almost any Product Online</h4></div>
+    <div class="box-static-content">
+        <?php
+		$level1=1;
+		foreach (Mage::helper('catalog/category')->getStoreCategories() as $categories):
+		?>
+        <ul><a href="<?php echo $categories->getUrl(); ?>"><?php echo $categories->getName(); ?></a>
+        <?php
+			$_subcategories = $categories->getChildrenCategories();
+			$level2=1;
+			foreach($_subcategories as $_subcategory):
+		?>
+                <li>
+                <a href="<?php echo $_subcategory->getUrl(); ?>"><?php echo $_subcategory->getName(); ?></a>
+                </li>
+        <?php 
+				$level2++;
+				if($level2==6) break;
+			endforeach; 
+		?>
+        </ul>
+        <?php if($level1==11) break; endforeach; ?>
+    </div>
+</div>

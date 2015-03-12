@@ -1,0 +1,21 @@
+<layout version="0.1.0">
+	<default>
+		<reference name="root">
+			<reference name="head">
+				<action method="addItem">
+					<type>skin_js</type>
+					<name>js/holder.js</name>
+				</action>
+			</reference>
+
+		</reference>
+				
+	</default>
+
+	<cms_index_index>
+		<reference name="content">
+			
+        </reference>
+	</cms_index_index>
+
+</layout>
