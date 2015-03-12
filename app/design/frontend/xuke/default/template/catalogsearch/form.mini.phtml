@@ -29,17 +29,82 @@ $catalogSearchHelper =  $this->helper('catalogsearch');
 ?>
 
 <form id="search_mini_form" action="<?php echo $catalogSearchHelper->getResultUrl() ?>" method="get">
-    <div class="input-box">
+     <!-- new -->
+     <div class="input-box input-group">
+        <div class="input-group-btn" id="btn-wrapper-menu-category"> 
+
         <label for="search"><?php echo $this->__('Search:') ?></label>
         <input id="search" type="search" name="<?php echo $catalogSearchHelper->getQueryParamName() ?>" value="<?php echo $catalogSearchHelper->getEscapedQueryText() ?>" class="input-text required-entry" maxlength="<?php echo $catalogSearchHelper->getMaxQueryLength();?>" placeholder="<?php echo $this->__('Search entire store here...') ?>" />
-        <button type="submit" title="<?php echo $this->__('Search') ?>" class="button search-button"><span><span><?php echo $this->__('Search') ?></span></span></button>
-    </div>
-
+            <button type="button" id="btn-menu-catelog" class="btn btn-transparent dropdown-toggle" data-toggle="dropdown" aria-expanded="true">
+                <span class="text-search-all">
+                  <span class="text-search-all-title">
+                    <?php
+                        $catParam=$this->getRequest()->getParam('cat');
+                        if($current_cat=Mage::registry('current_category')):
+                            if($current_cat->getLevel()!=2):
+                                $catParam=$current_cat->getParentCategory()->getId();
+                                echo $current_cat->getParentCategory()->getName();
+                            else:
+                                $catParam=$current_cat->getId();
+                                echo $current_cat->getName();
+                            endif;
+                        else:
+                            if($catParam==null):
+                                echo $this->__('All');
+                            else: 
+                                $catid=Mage::getModel('catalog/category')->load($catParam);
+                                echo $catid->getName();
+                            endif; 
+                        endif;
+                    ?>
+                  </span>
+                    <span class="caret"></span>
+                </span>
+            </button>
+            <ul id="search-cat" class="dropdown-menu" role="menu"  aria-labelledby="btn-menu-catelog">
+                <li><a href="#" class="all-cat" id=""><?php echo $this->__('All');  ?></a></li>
+                  <?php  
+                      $helper = Mage::helper('catalog/category');
+                      $categoriesCollection = $helper->getStoreCategories(); 
+                  ?>  
+                  <?php foreach($categoriesCollection as $cat):?>
+                  <?php if($cat->getId()!=$catParam): ?>
+                    <li class="item"><a href="#" class="text" id="<?php echo $cat->getId();?>"><?php echo $cat->getName();?></a></li>
+                   <?php endif; ?>
+                   <?php endforeach;?>
+                   <input type="hidden" name="cat" value="<?php echo $catParam; ?>" id="cat-id" />
+            </ul>
+        </div>
+    
+      <span class="input-group-btn">
+       <button type="submit" title="<?php echo $this->__('Search') ?>" class="button search-button"><span><span><?php echo $this->__('Search') ?></span></span></button>
+      </span>
+    </div><!-- /input-group -->
+    
     <div id="search_autocomplete" class="search-autocomplete"></div>
     <script type="text/javascript">
+
+        var $j = jQuery.noConflict();
+
+       $j("#search-cat li a").click(function(){
+              var txt = $j(this).text();
+              $j('#btn-menu-catelog').html('<span class="text-search-all"><span class="text-search-all-title">' + txt + '</span><span class="caret"></span></span>' );
+              if(!$j(this).hasClass('all-cat'))
+              {
+                $j('#search-cat .all-cat').show();
+              }
+              else{
+                $j('#search-cat .all-cat').hide();
+              }
+              $j('#cat-id').val($j(this).attr('id'));
+            });
+
     //<![CDATA[
         var searchForm = new Varien.searchForm('search_mini_form', 'search', '');
         searchForm.initAutocomplete('<?php echo $catalogSearchHelper->getSuggestUrl() ?>', 'search_autocomplete');
     //]]>
     </script>
+
+   
+
 </form>
