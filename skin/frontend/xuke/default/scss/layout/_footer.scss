@@ -166,7 +166,7 @@
         height: 60px;
         line-height: 17px;
         float: left;
-        @include border-radius-func(0,$default-border-radius,0,$default-border-radius);
+        @include border-left-radius(0);
     }
 
     .bugs,

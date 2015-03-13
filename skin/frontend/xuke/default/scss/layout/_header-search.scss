@@ -107,9 +107,7 @@
     height: 53px;
     border: 0;
     background-color: $c-green;
-    border-top-left-radius: 0;
-    border-bottom-left-radius: 0;
-    @include border-radius-func(0,$default-border-radius,0,$default-border-radius);
+    @include border-left-radius(0);
 }
 
 #search_mini_form .search-button:before {

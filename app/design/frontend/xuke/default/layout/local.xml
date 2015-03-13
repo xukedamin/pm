@@ -2,9 +2,8 @@
 	<default>
 		<reference name="root">
 			<reference name="head">
-				<action method="addItem">
-					<type>skin_js</type>
-					<name>js/holder.js</name>
+				<action method="addCss">
+					<stylesheet>css/custom.css</stylesheet>
 				</action>
 			</reference>
 
@@ -14,8 +13,8 @@
 
 	<cms_index_index>
 		<reference name="content">
-			
-        </reference>
+	
+    </reference>
 	</cms_index_index>
 
 </layout>
